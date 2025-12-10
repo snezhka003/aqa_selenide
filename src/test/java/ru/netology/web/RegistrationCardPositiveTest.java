@@ -99,15 +99,15 @@ public class RegistrationCardPositiveTest {
     void shouldBeAllElementsInDropdownContainInputSymbols() {
         $("[data-test-id='city'] input.input__control").setValue("Кр"); //вводим две буквы в поле города
         ElementsCollection elements = $$(".popup__container span.menu-item__control"); //получаем коллекцию элементов - городов в выпадающем списке
-        List<String> texts = elements.texts(); //получаем лист текстов всех элементов коллекции
-        String[] textsArray = texts.toArray(new String[0]); //преобразуем лист в массив
-        String regex = "(.*[кК]+.*[рР]+.*)"; //регулярное выражение для проверки текстов в массиве на соответствие ему
+//        List<String> texts = elements.texts(); //получаем лист текстов всех элементов коллекции
+//        String[] textsArray = texts.toArray(new String[0]); //преобразуем лист в массив
+//        String regex = "(.*[кК]+.*[рР]+.*)"; //регулярное выражение для проверки текстов в массиве на соответствие ему
+//
+//        //проверяем, что тексты всех элементов массива соответствуют регулярному выражению
+//        Assert.isTrue(checkArray(textsArray, regex), "Не все элементы списка соответствуют условию");
 
-        //проверяем, что тексты всех элементов массива соответствуют регулярному выражению
-        Assert.isTrue(checkArray(textsArray, regex), "Не все элементы списка соответствуют условию");
-
-        //пыталась средствами Selenide реализовать проверку, но не смогла
-        //elements.shouldBe(allMatch("asdf", (Predicate<WebElement>) element("span.menu-item__control").getText().contains());
+        //пыталась средствами Selenide реализовать проверку, внесла правки после вебинара, но тест все равно падает
+        elements.should(CollectionCondition.allMatch("Все города списка содержат введенные буквы", (element) -> element.getText().contains("к") && element.getText().contains("р")));
     }
 
     @Test
