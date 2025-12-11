@@ -125,27 +125,11 @@ public class RegistrationCardPositiveTest {
         String planningDate = generateDate(countPlanningDays, "dd.MM.yyyy"); //Выбор даты на неделю вперёд, начиная от текущей даты
 
         $("[data-test-id='city'] input.input__control").setValue("Краснодар");
-        $("[data-test-id='date'] input.input__control").click(); //кликаем на поле даты для отображения виджета календаря
-
-        //получаем коллекцию элементов - всех дней, доступных для выбора в текущем месяце, в появившемся виджете календаря
-        ElementsCollection activeDates = $$(".calendar__layout [data-day]");
-
-        //вычисляем кол-во дней, заблокированных для выбора в виджете: первая доступная лдя выбора дата минус текущая дата
-        int countInactiveDaysFromCurrentDate = Integer.parseInt($(".calendar__layout .calendar__day_state_current").getText()) - Integer.parseInt($(".calendar__layout .calendar__day_state_today").getText());
-
-        //вычисляем кол-во доступных для выбора дней в заданном в переменной countPlanningDays периоде: вычитаем из него кол-во заблокированных для выбора дней
-        int countPlanningActiveDays = countPlanningDays - countInactiveDaysFromCurrentDate;
-        int remains;  //остаток, который вычисляем в следующем за текущим месяце, если будет нужно переключиться на него
-        int currentWeek = activeDates.size(); //количество элементов - дней, доступных для выбора в текущем месяце
-
-        if (currentWeek < countPlanningActiveDays) { //если дней, доступных для выбора в текущем месяце, недостаточно для получения нужной даты planningDate
-            remains = countPlanningActiveDays - currentWeek; //то вычисляем остаток - нужный нам день, учитывая заданный период, в новом месяце
-            $(".calendar__title [data-step='1']").click(); // и переключаемся на следующий месяц
-            activeDates.get(remains).click(); //выбираем нужный нам день в новом месяце и кликаем на него, тем самым заполнив поле даты
-        } else { //если дней, доступных для выбора в текущем месяце, достаточно для получения нужной даты planningDate
-            activeDates.get(countPlanningActiveDays).click(); //выбираем нужную дату, исходя из заданного периода
+        $("[data-test-id='date'] input.input__control").click();
+        if(!generateDate(3, "MM").equals(generateDate(countPlanningDays, "MM"))) {
+            $(".calendar__title [data-step='1']").click();
         }
-
+        $$(".calendar__layout [data-day]").find(Condition.text(generateDate(countPlanningDays, "d"))).click();
         $("[data-test-id='name'] input.input__control").setValue("Петров-Водкин Артем");
         $("[data-test-id='phone'] input.input__control").setValue("+79001234567");
         $("[data-test-id='agreement']").click();
