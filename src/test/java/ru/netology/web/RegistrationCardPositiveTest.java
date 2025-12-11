@@ -101,15 +101,10 @@ public class RegistrationCardPositiveTest {
         ElementsCollection elements = $$(".popup__container span.menu-item__control"); //получаем коллекцию элементов - городов в выпадающем списке
 
         //решение через цикл и сравнение с регулярным выражением
-//        List<String> texts = elements.texts(); //получаем лист текстов всех элементов коллекции
-//        String[] textsArray = texts.toArray(new String[0]); //преобразуем лист в массив
-//        String regex = "(.*[кК]+.*[рР]+.*)"; //регулярное выражение для проверки текстов в массиве на соответствие ему
-//
-//        //проверяем, что тексты всех элементов массива соответствуют регулярному выражению
-//        Assert.isTrue(checkArray(textsArray, regex), "Не все элементы списка соответствуют условию");
+        //Assert.isTrue(checkArray(elements.texts().toArray(new String[0]), "(.*[кК]+.*[рР]+.*)"), "Не все элементы списка соответствуют условию");
 
         //решение средствами Selenide + Selenium
-        elements.should(CollectionCondition.allMatch("Все города списка содержат введенные буквы", (element) -> element.getText().contains("к")|element.getText().contains("К") && element.getText().contains("р")|element.getText().contains("Р")));
+        elements.should(CollectionCondition.allMatch("Все города списка содержат введенные буквы", (element) -> element.getText().toLowerCase().contains("к") && element.getText().toLowerCase().contains("р")));
     }
 
     @Test
